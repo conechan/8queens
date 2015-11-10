@@ -13,12 +13,25 @@ var Queen = (function () {
   // 是否正在运行
   var isRunning = false;
   // 配置参数
+  // 搜索间隔
   var interval = 1000;
-  var f = function(){};
-  var stepCallback = f;
-  var solutionCallback = f;
-  var doneCallback = f;
+  var _f = function(){};
+  // 每一步的回调
+  var stepCallback = _f;
+  // 找到解的回调
+  var solutionCallback = _f;
+  // 搜索结束的回调
+  var doneCallback = _f;
 
+  /**
+   *
+   * 判断位置是否 OK
+   *
+   * @param {Number} row 行号
+   * @param {Number} col 列号
+   * @returns {Boolean}
+   * @private
+   */
   function _isOK (row, col) {
     for (var i = 0; i < row; i++) {
       if (stack[i] === col || (Math.abs(stack[i] - col) === row - i)) {
@@ -28,7 +41,17 @@ var Queen = (function () {
     return true;
   }
 
+  /**
+   * 
+   * 搜索函数
+   *
+   * @returns {Boolean} 是否找到可用位置
+   * @private
+   */
   function _searchPosition () {
+
+    // 每一步回调, 返回当前的放置堆栈
+    stepCallback(stack);
 
     // 全部搜索完毕
     if (stack.length === 0) {
@@ -38,8 +61,6 @@ var Queen = (function () {
 
     // 当前正进行搜索的行
     var currentRow = stack.length;
-    
-    stepCallback(stack);
 
     // 循环去找
     for (var col = lastCol; col < N; col++) {
@@ -88,12 +109,20 @@ var Queen = (function () {
 
   }
 
+  /**
+   * 搜索结束
+   * @private
+   */
   function _done () {
     clearInterval(timer);
     isRunning = false;
     doneCallback(result);
   }
 
+  /**
+   * 配置
+   * @param options
+   */
   function config (options) {
     interval = options.interval || interval;
     stepCallback = options.stepCallback || stepCallback;
@@ -101,6 +130,9 @@ var Queen = (function () {
     doneCallback = options.doneCallback || doneCallback;
   }
 
+  /**
+   * 开始
+   */
   function start () {
     if (isRunning) return;
     isRunning = true;
@@ -111,22 +143,35 @@ var Queen = (function () {
     timer = setInterval(_searchPosition, interval);
   }
 
+  /**
+   * 继续
+   */
   function resume () {
     if (isRunning) return;
     isRunning = true;
     timer = setInterval(_searchPosition, interval);
   }
 
+  /**
+   * 停止
+   */
   function stop () {
     isRunning = false;
     clearInterval(timer);
   }
 
+  /**
+   * 暂停
+   */
   function pause () {
     isRunning = false;
     clearInterval(timer);
   }
 
+  /**
+   * 获取解数组
+   * @returns {Array}
+   */
   function getResult () {
     return result;
   }
