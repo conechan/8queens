@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>8 Queens</title>
+</head>
+<link rel="stylesheet" type="text/css" href="css/queen.css">
+<body>
+
+<h1>8 Queens Demo</h1>
+<hr>
+
+<div class="main">
+  <div class="app">
+    <div id="js-board" class="board"></div>
+    <div class="control">
+      <label>Interval(Unit ms): </label>
+      <input id="js-input-interval" type="text" placeholder="500">
+      <button id="js-btn-start">Start</button>
+      <button id="js-btn-pause">Pause</button>
+      <button id="js-btn-resume">Resume</button>
+      <button id="js-btn-stop">Stop</button>
+    </div>
+  </div>
+  <hr>
+  <h2>Solutions</h2>
+  <div id="js-result" class="result"></div>
+</div>
+
+
+<script src="js/queen.js"></script>
+<script src="js/app.js"></script>
+<script>
+  App.init();
+</script>
+</body>
+</html>
